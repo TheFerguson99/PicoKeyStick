@@ -129,7 +129,7 @@ while not main_loop:
                 print("Confirm y/n")
                 add_confirm = input("console:")
                 if add_confirm.lower() == "y" or add_confirm.lower() == "yes":
-                    print("Enter key\n\n")
+                    print("Enter key")
                     key_input = input("console:")
                     print(f"Is < {key_input} > corect?")
                     print("Confirm y/n")
