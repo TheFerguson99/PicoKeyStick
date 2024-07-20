@@ -54,6 +54,7 @@ class CSVHandler:
             data[name] = new_value
             try:
                 with open(self.file_path, mode='w') as file:
+                    file.write('name,value\n')
                     for key, value in data.items():
                         file.write(f'{key},{value}\n')
                 print("Data updated in CSV successfully.")
