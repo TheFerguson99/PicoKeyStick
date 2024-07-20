@@ -1,0 +1,33 @@
+This is a Circuitpython programm for the Raspberry Pie Picko.
+i used the vcc_gnd_yd_rp2040.
+but should work for any board, just declare your neopixel pin if you have one/want to use it.
+
+When first running the programm since init is false default wise, it will enable DEBUG and show_usb.
+
+The board can also auto execute a ducky-script when connected to a pc.
+For this DuckyMode and auto_payload have to be True.
+Then once the file /payload/duckyscript.txt got executed,
+auto_payload then gets set False
+
+[Generel]
+This project is to have a device that enters your passwords for you.
+It help you have long and strong passwords that you normally wouldnt be able to remember.
+This is not super secure, only usefull for everyday normal jon does.
+I am no expert but I belive that it is possible to readout what is on the flash and therfore find out all passwords that are saved.
+But if you are like me someone who wants to have strong passwords but dosnt have anything of interest that people with good enougth 
+computer skills want, then this is for you.
+
+Curently i have it on my key chain with another usb drive that has Simple Serial on it to comunicate with the pico over serial.
+(Maybe find better way to talk to microcontroller from pc)
+
+I am no professional in these fields, use of any kind is at your own risk.
+
+This is a Project of mine, i dont know how the future will look.
+
+I want it to be opensource and comunity driven but i havent had anything in that direction.
+
+TODO:
+
+Second serial port: It seems to be posible to have a second serial port without REPL but i havend had luck in getting it to work.
+Encryption: I want all csv files to be encrypted. Have to think about how to implement it best, security wise.
+CSV Updating: Wen updating a csv i belive it has trouble with the formating. This should be fixed first!!!
