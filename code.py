@@ -53,7 +53,8 @@ main_loop = False
 Handler = CSVHandler()
 app = CSVHandler(file_path="/data/app.csv")
 
-if NEOPIXEL:#Check if it is posible to use neopixel_pin
+#Check if it is posible to use neopixel_pin
+if NEOPIXEL:
     try:
         pixels = NeoPixelBackground(neopixel_pin, 1)
         pixels.fill((0,0,0))
@@ -187,7 +188,7 @@ while not main_loop:
                 print("Enter setting to change.\n")
                 for xkey in options_items.keys():
                     yvalue = settings.get_key(xkey)
-                    print("Name:"+str(xkey)+"; Value:"+str(yvalue)+";\n")
+                    print("Name:"+str(xkey)+": Value:"+str(yvalue)+";\n")
                 option_key = input("console:")
                 #the key we entered is present in the dictonary/ we only use boolen value types
                 if option_key in options_items:
@@ -211,8 +212,8 @@ while not main_loop:
             #endregion
             elif name == "restart" or name == "Restart":
                 microcontroller.reset()
-            #region Keys and non valid Input.
             else:
+                #region Keys and non valid Input.
                 result = Handler.get_value_by_name(name)
                 if result == None:
                     print("Wrong Command.")
