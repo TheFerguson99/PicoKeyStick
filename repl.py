@@ -1,4 +1,4 @@
-from cll.NVMStorage import NVMStorage # type: ignore
+from cll.nvmstorage import NVMStorage # type: ignore
 import microcontroller
 settings = NVMStorage(size=20)
 repl_remove = settings.get_key("repl_remove")
