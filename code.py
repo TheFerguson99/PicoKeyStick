@@ -122,6 +122,16 @@ while not main_loop:
             #We exit the Programm.
             if name == "return" or name == "Return":
                 secound_loop = True
+            elif name.lower() == "masterkey":
+                print("Please enter curent Masterkey to confirm")
+                master_key_reply = input("console:")
+                if master_key_reply == master_key:
+                    print("Please enter new Masterkey.")
+                    master_key_new = input("console:")
+                    print(f'Is {master_key_new} corect?')
+                    master_key_finale = input("y/n?")
+                    if master_key_finale.lower() in ['true', '1', 'yes', 'y']:
+                        app.update_value("materpasword",master_key_new)
             #region Add key
             elif name.lower() == "add":
                 print("Enter name of key.")
