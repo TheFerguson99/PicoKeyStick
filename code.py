@@ -117,10 +117,10 @@ while not main_loop:
         print("\n\n[Main]\n")
         secound_loop = False
         while not secound_loop:
-            print("Commands are [options][print][add][update][remove][key][return][restart]:\n")
+            print("Commands are [options][print][add][update][remove][key][masterkey][return][restart]:\n")
             name = input("console:")
             #We exit the Programm.
-            if name == "return" or name == "Return":
+            if name.lower() == "return":
                 secound_loop = True
             elif name.lower() == "masterkey":
                 print("Please enter curent Masterkey to confirm")
@@ -128,8 +128,8 @@ while not main_loop:
                 if master_key_reply == master_key:
                     print("Please enter new Masterkey.")
                     master_key_new = getpass.getpass("console:")
-                    print(f'Is {master_key_new} corect?')
-                    master_key_finale = input("y/n?")
+                    print(f'Is {master_key_new} corect? y/n?')
+                    master_key_finale = input("console:")
                     if master_key_finale.lower() in ['true', '1', 'yes', 'y']:
                         app.update_value("materpasword",master_key_new)
             #region Add key
@@ -139,17 +139,17 @@ while not main_loop:
                 print(f"Name of key is {key_name}")
                 print("Confirm y/n")
                 add_confirm = input("console:")
-                if add_confirm.lower() == "y" or add_confirm.lower() == "yes":
+                if add_confirm.lower()  in ['true', '1', 'yes', 'y']:
                     print("Enter key")
                     key_input = input("console:")
                     print(f"Is < {key_input} > corect?")
                     print("Confirm y/n")
                     key_finale = input("console:")
-                    if key_finale.lower() == "y" or key_finale.lower() == "yes":
+                    if key_finale.lower() in ['true', '1', 'yes', 'y']:
                         Handler.write_to_csv({key_name:key_input})
-                    elif key_finale.lower() == "n" or key_finale.lower() == "no":
+                    elif key_finale.lower() in ['false', '0', 'no', 'n']:
                         pass
-                elif add_confirm.lower() == "n" or add_confirm.lower() == "no":
+                elif add_confirm.lower() in ['false', '0', 'no', 'n']:
                     pass
             elif name.lower() == "remove":
                 print("Enter name of key to be removed.")
@@ -157,7 +157,7 @@ while not main_loop:
                 print(f"Name of key is {key_name}")
                 print("Confirm y/n")
                 add_confirm = input("console:")
-                if add_confirm.lower() == "y" or add_confirm.lower() == "yes":
+                if add_confirm.lower()  in ['true', '1', 'yes', 'y']:
                     result = Handler.get_value_by_name(key_name)
                     if result == None:
                         print("No key named " + key_name)
@@ -171,7 +171,7 @@ while not main_loop:
                 print(f"Name of key is {key_name}")
                 print("Confirm y/n")
                 add_confirm = input("console:")
-                if add_confirm.lower() == "y" or add_confirm.lower() == "yes":
+                if add_confirm.lower()  in ['true', '1', 'yes', 'y']:
                     result = Handler.get_value_by_name(key_name)
                     if result == None:
                         print("No key named " + key_name)
@@ -181,9 +181,9 @@ while not main_loop:
                         print(f"Is < {key_input} > corect?")
                         print("Confirm y/n")
                         key_finale = input("console:")
-                        if key_finale.lower() == "y" or key_finale.lower() == "yes":
+                        if key_finale.lower()  in ['true', '1', 'yes', 'y']:
                             Handler.update_value(key_name,key_input)
-                        elif key_finale.lower() == "n" or key_finale.lower() == "no":
+                        elif key_finale.lower() in ['false', '0', 'no', 'n']:
                             pass
             #Print setting 
             elif name == "print" or name == "Print":
@@ -207,12 +207,12 @@ while not main_loop:
                         print("Enter new value")
                         opt_nw = input("console:")
                         #We have a valid option key replay from user input and set value acordingly
-                        if opt_nw == "true" or opt_nw == "True":
+                        if opt_nw.lower() in ['true', '1', 'yes', 'y']:
                             settings.write_key(option_key,True)
                             print("Wrote :" + option_key + "=" + str(True) + ".\n")
                             options_loop = True
                             print("Value Edited.\n")
-                        elif opt_nw == "False"or opt_nw == "false":
+                        elif opt_nw.lower()  in ['false', '0', 'no', 'n']:
                             settings.write_key(option_key,False)
                             print("Wrote :" + option_key + "=" + str(False) + ".\n")
                             options_loop = True
@@ -232,32 +232,31 @@ while not main_loop:
                     end_loop = False
                     while not end_loop:
                         confirm = input("Use? y/n?:")
-                        if confirm == "y" or confirm == "Y" or confirm == "n" or confirm == "N":
-                            #We have valid input entered
-                            if confirm == "N" or confirm == "n":
-                                end_loop = True
-                            else:
-                                Delay = int(app.get_value_by_name("delay"))
-                                while Delay != 0:
-                                    time.sleep(0.5)
-                                    if NEOPIXEL == True:
-                                        pixels.fill((50,0,50))
-                                    time.sleep(0.5)
-                                    if NEOPIXEL == True:
-                                        pixels.fill((0,0,0))
-                                    print(str(Delay) + " seconds left.")
-                                    Delay = Delay-1
-                                time.sleep(0.2)
-                                #region HID Output 
-                                for char in result:
-                                    layout.write(char)
-                                    time.sleep(0.1)
-                                time.sleep(1)
-                                #endregion
-                                #Exit all loops
-                                main_loop = True
-                                secound_loop = True
-                                end_loop = True
+                        #We have valid input entered
+                        if confirm.lower()  in ['false', '0', 'no', 'n']:
+                            end_loop = True
+                        elif confirm.lower() in ['true', '1', 'yes', 'y']:
+                            Delay = int(app.get_value_by_name("delay"))
+                            while Delay != 0:
+                                time.sleep(0.5)
+                                if NEOPIXEL == True:
+                                    pixels.fill((50,0,50))
+                                time.sleep(0.5)
+                                if NEOPIXEL == True:
+                                    pixels.fill((0,0,0))
+                                print(str(Delay) + " seconds left.")
+                                Delay = Delay-1
+                            time.sleep(0.2)
+                            #region HID Output 
+                            for char in result:
+                                layout.write(char)
+                                time.sleep(0.1)
+                            time.sleep(1)
+                            #endregion
+                            #Exit all loops
+                            main_loop = True
+                            secound_loop = True
+                            end_loop = True
             #endregion
             #endregion
     wrong_index= wrong_index + 1
