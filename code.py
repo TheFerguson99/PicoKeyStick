@@ -124,10 +124,10 @@ while not main_loop:
                 secound_loop = True
             elif name.lower() == "masterkey":
                 print("Please enter curent Masterkey to confirm")
-                master_key_reply = input("console:")
+                master_key_reply = getpass.getpass("console:")
                 if master_key_reply == master_key:
                     print("Please enter new Masterkey.")
-                    master_key_new = input("console:")
+                    master_key_new = getpass.getpass("console:")
                     print(f'Is {master_key_new} corect?')
                     master_key_finale = input("y/n?")
                     if master_key_finale.lower() in ['true', '1', 'yes', 'y']:
