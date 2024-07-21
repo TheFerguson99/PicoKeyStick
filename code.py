@@ -87,6 +87,7 @@ try:
         if NEOPIXEL == True:
             pixels.fill((200,200,200))
         time.sleep(1)
+        settings.write_key("auto_payload",False)
 except:
     settings.write_key("ducky_mode",False)
     settings.write_key("auto_payload",False)
