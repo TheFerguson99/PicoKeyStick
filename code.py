@@ -77,7 +77,10 @@ def Options():
     print("Enter setting to change.\n")
     for xkey in options_items.keys():
         yvalue = settings.get_key(xkey)
-        print("Name:"+str(xkey)+": Value:"+str(yvalue)+";\n")
+        if yvalue:
+            print("Name:" + InColor(str(xkey),"BLUE") + ": Value:" + InColor(str(yvalue),"GREEN") + ";\n")
+        else:
+            print("Name:" + InColor(str(xkey),"BLUE") + ": Value:" + InColor(str(yvalue),"RED") + ";\n")
     option_key = input(InColor("console:","BOLD","GREEN"))
     #the key we entered is present in the dictonary/ we only use boolen value types
     if option_key in options_items:
