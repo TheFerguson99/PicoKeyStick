@@ -31,7 +31,7 @@ class NVMStorage:
     def read_all(self) -> list:
         return [self._byte_to_bool(bytes([self.nvm[i]])) for i in range(self.size)]
     
-    indexes = {"DEBUG":0,"show_usb":1,"reply_remove":2,"boot_test":3,"ducky_mode":4,"auto_payload":5,"init":6,"NEOPIXEL":7,}
+    indexes = {"DEBUG":0,"show_usb":1,"repl_remove":2,"boot_test":3,"ducky_mode":4,"auto_payload":5,"init":6,"NEOPIXEL":7,}
 
     def get_key(self, key : str):
         if key not in self.indexes.keys():
