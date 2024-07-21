@@ -88,7 +88,6 @@ def Options():
         while not options_loop:
             print("Enter new value")
             opt_nw = input(InColor("console:","BOLD","GREEN"))
-            #We have a valid option key replay from user input and set value acordingly
             if opt_nw.lower() in ['true', '1', 'yes', 'y']:
                 settings.write_key(option_key,True)
                 print("Wrote :" + option_key + "=" + str(True) + ".\n")
