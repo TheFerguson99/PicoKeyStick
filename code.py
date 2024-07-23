@@ -1,5 +1,6 @@
 import microcontroller
 import board
+import os
 import time
 import getpass
 import usb_hid
@@ -67,9 +68,82 @@ layout = keyboard_layout_win_gr.KeyboardLayout(keyboard)
 time.sleep(0.5)
 
 master_key = app.get_value_by_name("materpasword")
+try:
+    if ducky_mode and auto_payload:
+        duck = adafruit_ducky.Ducky("/payload/duckyscript.txt", keyboard, layout)
+        result = True
+        while result is not False:
+            result = duck.loop()
+            main_loop = True
+        settings.write_key("auto_payload",False)
+        time.sleep(0.5)
+        if NEOPIXEL == True:
+            pixels.fill((200,200,200))
+        time.sleep(0.5)
+        if NEOPIXEL == True:
+            pixels.fill((0,0,0))
+        time.sleep(0.5)
+        if NEOPIXEL == True:
+            pixels.fill((200,200,200))
+        time.sleep(1)
+        settings.write_key("auto_payload",False)
+except:
+    settings.write_key("ducky_mode",False)
+    settings.write_key("auto_payload",False)
+    print("Failed to execute Ducky script.")
+    
+def list_files(directory):
+    try:
+        files = os.listdir(directory)
+        for file in files:
+            print(file)
+    except OSError as e:
+        print("Error:", e)
 
 def Ducky():
-    pass
+    global NEOPIXEL
+    global pixels
+    global keyboard
+    global layout
+    print("\n")
+    print(InColor("[DUCKY]","BOLD","RED"))
+    print("\n\n")
+    while True:
+        print("Commands are [load][x][exit]")
+
+        ducky_input = input(InColor("console:","BOLD","GREEN"))
+
+        if ducky_input.lower() == "load":
+            try:
+                files = os.listdir("/payload/")
+                for file in files:
+                    print(InColor("[File]","BOLD","GREEN") + file)
+            except OSError as e:
+                print("Error:", e)
+            print("Enter Filename.")
+            filename = input(InColor("console:","BOLD","GREEN"))
+            try:
+                os.stat("/payload/"+filename)#we have a valid filename if this dosnt raise exception
+                duck = adafruit_ducky.Ducky(("/payload/"+filename), keyboard, layout)
+                result = True
+                while result is not False:
+                    result = duck.loop()
+                settings.write_key("auto_payload",False)
+                time.sleep(0.5)
+                if NEOPIXEL == True:
+                    pixels.fill((200,200,200))
+                time.sleep(0.5)
+                if NEOPIXEL == True:
+                    pixels.fill((0,0,0))
+                time.sleep(0.5)
+                if NEOPIXEL == True:
+                    pixels.fill((200,200,200))
+                time.sleep(1)
+                return
+            except OSError:
+                print("File dose not excist.")
+        elif ducky_input.lower() == "exit":
+            return
 
 def Options():
     global settings
@@ -215,7 +289,7 @@ def Inner_loop():
     global Handler
     secound_loop = True
     while secound_loop:
-        print("Commands are [options][print][add][update][remove][key][masterkey][return][restart]:\n")
+        print("Commands are [options][print][add][update][remove][key][masterkey][ducky][return][restart]:\n")
         name = input(InColor("console:","BOLD","GREEN"))
         #We exit the Programm.
         if name.lower() == "return":
@@ -234,6 +308,8 @@ def Inner_loop():
             Masterkey()
         elif name.lower() == "restart":
             Restart()
+        elif name.lower() == "ducky":
+            Ducky()
         elif name in Handler.read_from_csv().keys():
             Key(name)
         else:
