@@ -68,6 +68,7 @@ layout = keyboard_layout_win_gr.KeyboardLayout(keyboard)
 time.sleep(0.5)
 
 master_key = app.get_value_by_name("materpasword")
+#region auto_payload
 try:
     if ducky_mode and auto_payload:
         duck = adafruit_ducky.Ducky("/payload/duckyscript.txt", keyboard, layout)
@@ -91,7 +92,7 @@ except:
     settings.write_key("ducky_mode",False)
     settings.write_key("auto_payload",False)
     print("Failed to execute Ducky script.")
-    
+
 def list_files(directory):
     try:
         files = os.listdir(directory)
@@ -99,7 +100,7 @@ def list_files(directory):
             print(file)
     except OSError as e:
         print("Error:", e)
-
+#region ducky
 def Ducky():
     global NEOPIXEL
     global pixels
@@ -124,27 +125,38 @@ def Ducky():
             filename = input(InColor("console:","BOLD","GREEN"))
             try:
                 os.stat("/payload/"+filename)#we have a valid filename if this dosnt raise exception
-                duck = adafruit_ducky.Ducky(("/payload/"+filename), keyboard, layout)
-                result = True
-                while result is not False:
-                    result = duck.loop()
-                settings.write_key("auto_payload",False)
-                time.sleep(0.5)
-                if NEOPIXEL == True:
-                    pixels.fill((200,200,200))
-                time.sleep(0.5)
-                if NEOPIXEL == True:
-                    pixels.fill((0,0,0))
-                time.sleep(0.5)
-                if NEOPIXEL == True:
-                    pixels.fill((200,200,200))
-                time.sleep(1)
-                return
+                print("Confirm loading file y/n " + filename)
+                ducky_confirm = input(InColor("console:","BOLD","GREEN"))
+                if ducky_confirm.lower() in ['true', '1', 'yes', 'y']:
+                    duck = adafruit_ducky.Ducky(("/payload/"+filename), keyboard, layout)
+                    result = True
+                    while result is not False:
+                        result = duck.loop()
+                    settings.write_key("auto_payload",False)
+                    time.sleep(0.5)
+                    if NEOPIXEL == True:
+                        pixels.fill((100,100,100))
+                    time.sleep(0.5)
+                    if NEOPIXEL == True:
+                        pixels.fill((0,0,0))
+                    time.sleep(0.5)
+                    if NEOPIXEL == True:
+                        pixels.fill((100,100,100))
+                    time.sleep(1)
+                    if DEBUG:
+                        if NEOPIXEL == True:
+                            pixels.fill((0,40,0))
+                    else:
+                        if NEOPIXEL == True:
+                            pixels.fill((0,0,40))
+                    return
+                elif ducky_confirm.lower() in ['false', '0', 'no', 'n']:
+                    pass
             except OSError:
                 print("File dose not excist.")
         elif ducky_input.lower() == "exit":
             return
-
+#region Options
 def Options():
     global settings
     options_items = settings.indexes
@@ -172,7 +184,7 @@ def Options():
                 print("Wrote :" + option_key + "=" + str(False) + ".\n")
                 options_loop = True
                 print("Value Edited.\n")
-
+#region Print
 def Print():
     global Handler
     try:
@@ -180,7 +192,7 @@ def Print():
             print("Key:[" + x + "]")
     except:
         print("Failed to print Keys")
-
+#region Remove
 def Remove():
     global Handler
     print("Enter name of key to be removed.")
@@ -196,7 +208,7 @@ def Remove():
             Handler.remove_entry(key_name)
     else:
         pass
-
+#region Update
 def Update():
     global Handler
     print("Enter name of key.")
@@ -218,7 +230,7 @@ def Update():
                 Handler.update_value(key_name,key_input)
             elif key_finale.lower() in ['false', '0', 'no', 'n']:
                 pass
-
+#region Add
 def Add():
     global app
     global Handler
@@ -239,7 +251,7 @@ def Add():
             pass
     elif add_confirm.lower() in ['false', '0', 'no', 'n']:
         pass
-
+#region Key
 def Key(name):
     global Handler
     global pixels
@@ -268,7 +280,7 @@ def Key(name):
             keyloop = False
         elif confirm.lower() in ['false', '0', 'no', 'n']:
             keyloop = False
-
+#region Masterkey
 def Masterkey():
     global app
     print("Please enter current Masterkey to confirm")
@@ -283,7 +295,7 @@ def Masterkey():
 
 def Restart():
     microcontroller.reset()
-
+#region Inner_loop
 def Inner_loop():
     global main_loop
     global Handler
@@ -314,7 +326,7 @@ def Inner_loop():
             Key(name)
         else:
             print(f'Dont know {name}')
-
+#region Main
 def Main():
     global main_loop
     global wrong_index
