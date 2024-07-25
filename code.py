@@ -20,8 +20,6 @@ from cll.csv import CSVHandler# type: ignore
 
 from cll.color import InColor
 
-from cll.console import convert_input_to_type # type:ignore
-
 from cll.settings import settings as Setting_type_name # type:ignore
 
 supervisor.runtime.autoreload = False
