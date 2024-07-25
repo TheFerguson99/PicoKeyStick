@@ -1,0 +1,5 @@
+name,value
+delay,30
+auto_payload_filename,duckyscript.txt
+drivename,test
+materpasword,pico
