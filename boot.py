@@ -21,16 +21,16 @@ if boot_test == True:
     pass
 
 storage.remount("/", readonly=False)
-try:
-    files = os.listdir("/temp/")
-    for file in files:
-        try:
-            os.remove("/temp/" + file)
-        except:
-            if DEBUG:
-                print("Failed to delete file :" + file)
-except OSError as e:
-    print("Error:", e)
+#try:
+#    files = os.listdir("/temp/")
+#    for file in files:
+#        try:
+#            os.remove("/temp/" + file)
+#        except:
+#            if DEBUG:
+#                print("Failed to delete file :" + file)
+#except OSError as e:
+#    print("Error:", e)
 m = storage.getmount("/")
 m.label = settings.get_value_by_name("drivename")
 storage.remount("/", readonly=DEBUG)
