@@ -79,7 +79,7 @@ keyboard = Keyboard(usb_hid.devices)
 layout = keyboard_layout_win_gr.KeyboardLayout(keyboard)
 time.sleep(0.5)
 
-master_key = settings.get_value_by_name("materpasword")
+master_key = settings.get_value_by_name("master_key")
 #region auto_payload
 if single_mode or auto_payload:
     try:
@@ -302,19 +302,6 @@ def Key(name):
             keyloop = False
         elif confirm.lower() in ['false', '0', 'no', 'n']:
             keyloop = False
-#region Masterkey
-def Masterkey():
-    global settings
-    print("Please enter current Masterkey to confirm")
-    master_key_reply = getpass.getpass(InColor("console:","BOLD","GREEN"))
-    if master_key_reply == master_key:
-        print("Please enter new Masterkey.")
-        master_key_new = getpass.getpass(InColor("console:","BOLD","GREEN"))
-        print(f'Is {master_key_new} corect? y/n?')
-        master_key_finale = input(InColor("console:","BOLD","GREEN"))
-        if master_key_finale.lower() in ['true', '1', 'yes', 'y']:
-            settings.update_value("materpasword",master_key_new)
-
 def Settings():
     global settings
     for key, value in settings.read_from_csv().items():
@@ -396,8 +383,6 @@ def Inner_loop():
             Config()
         elif name.lower() == "print":
             Print()
-        elif name.lower() == "masterkey":
-            Masterkey()
         elif name.lower() == "restart":
             Restart()
         elif name.lower() == "ducky":
