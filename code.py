@@ -368,7 +368,7 @@ def Inner_loop():
     global Handler
     secound_loop = True
     while secound_loop:
-        print("\nCommands are [print][key][add][update][remove][masterkey][ducky][jiggler][config][settings][return][restart]:\n")
+        print("\nCommands are [print][key][add][update][remove][ducky][jiggler][config][settings][return][restart]:\n")
         name = input(InColor("console:","BOLD","GREEN"))
         #We exit the Programm.
         if name.lower() == "return":
