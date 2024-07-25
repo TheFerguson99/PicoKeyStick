@@ -1,0 +1,8 @@
+DELAY 500
+GUI r
+DELAY 500
+STRING msedge
+ENTER
+DELAY 1000
+STRING https://github.com/TheFerguson99/PicoKeyStick
+ENTER
