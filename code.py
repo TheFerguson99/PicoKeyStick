@@ -1,3 +1,4 @@
+import random
 import microcontroller
 import board
 import os
@@ -57,12 +58,12 @@ main_loop = True
 wrong_index = 0
 
 # Define the area boundaries
-AREA_WIDTH = 100
-AREA_HEIGHT = 100
+AREA_WIDTH = int(settings.get_value_by_name("AREA_WIDTH"))
+AREA_HEIGHT = int(settings.get_value_by_name("AREA_HEIGHT"))
 
 # Define movement step and delay
-STEP = 1
-DELAY = 0.1
+STEP = int(settings.get_value_by_name("STEP"))
+DELAY = float(settings.get_value_by_name("DELAY"))
 
 #Check if it is posible to use neopixel_pin
 if NEOPIXEL:
@@ -90,7 +91,6 @@ if single_mode or auto_payload:
             while result is not False:
                 result = duck.loop()
                 main_loop = True
-            config.write_key("auto_payload",False)
             time.sleep(0.5)
             if NEOPIXEL == True:
                 pixels.fill((200,200,200))
@@ -103,6 +103,7 @@ if single_mode or auto_payload:
             time.sleep(1)
             config.write_key("single_mode",False)
         elif auto_payload:
+            button_pressed = not button.value
             if button_pressed:
                 config.write_key("auto_payload",False)
             else:
@@ -302,6 +303,7 @@ def Key(name):
             keyloop = False
         elif confirm.lower() in ['false', '0', 'no', 'n']:
             keyloop = False
+            #region Settings
 def Settings():
     global settings
     for key, value in settings.read_from_csv().items():
@@ -339,11 +341,18 @@ def Jiggler():
     global button_pressed
     x, y = 0, 0
     dx, dy = STEP, STEP
+
     while True:
         try:
             if NEOPIXEL:
-                pixels.fill((0,x,y))
+                pixels.fill((0, x % 255, y % 255))
+            
+            # Introduce random variations
+            dx = STEP if random.random() > 0.5 else -STEP
+            dy = STEP if random.random() > 0.5 else -STEP
+            
             mouse.move(x=dx, y=dy)
+            
             # Update the cursor position
             x += dx
             y += dy
@@ -353,14 +362,18 @@ def Jiggler():
                 dx = -dx
             if y >= AREA_HEIGHT or y <= 0:
                 dy = -dy
+
             time.sleep(DELAY)
+            
             button_pressed = not button.value
             if button_pressed:
                 if NEOPIXEL:
-                    pixels.fill((0,0,0))
+                    pixels.fill((0, 0, 0))
                 return
-        except:
-            print("Failed Jiggler")
+        except Exception as e:
+            print(f"Failed Jiggler: {e}")
+            if NEOPIXEL:
+                pixels.fill((255, 0, 0))  # Indicate error with red light
             return
 #region Inner_loop
 def Inner_loop():
